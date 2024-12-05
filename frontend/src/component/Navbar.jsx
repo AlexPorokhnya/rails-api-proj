@@ -13,7 +13,7 @@ const Navbar = () => {
                 <div className="navbar-collapse">
                     <div className="navbar-nav me-4">
                         <Link className="nav-link active" style = {{fontSize: 20, whiteSpace: "nowrap"}} to="/">Home</Link>
-                        <Link className="nav-link active" style = {{fontSize: 20, whiteSpace: "nowrap"}} to="/">All posts</Link>
+                        <Link className="nav-link active" style = {{fontSize: 20, whiteSpace: "nowrap"}} to="/posts">All posts</Link>
                         <button className="nav-link active" style = {{fontSize: 20, whiteSpace: "nowrap"}} onClick={() => navigate("/newPost")}>Create post</button>
                         <button className="btn btn-primary" style = {{fontSize: 20, whiteSpace: "nowrap"}} onClick={() => navigate("/login")}>Log In</button>
                     </div>

@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 import Authentication, {PageType} from './pages/Authentication.jsx'
 import AllPosts from './pages/AllPosts.jsx'
+import Posts from './pages/Posts.jsx'
 
 import {
   createBrowserRouter,
@@ -28,7 +29,11 @@ const router  = createBrowserRouter([
   {
     path: "/newPost",
     element: <AllPosts />
-  }
+  },
+  {
+    path: "/posts",
+    element: <Posts />
+  },
 ])
 
 createRoot(document.getElementById('root')).render(

@@ -1,12 +1,16 @@
 module Api
   module V1
     class PostsController < ApplicationController
-      before_action :authenticate_user!, except: %i[index, show]
+      before_action :authenticate_user!, except: %i[index show]
       before_action :set_post, only: %i[show update destroy]
       before_action :authorize_admin, only: %i[update destroy]
       def index
-        @posts = Post.all
-        render json: @posts
+        @posts = Post.joins(:user).select('posts.*, users.email AS email')
+        render json: @posts.map{ |post| post.attributes.merge(email: post.email) }
+      end
+
+      def current
+        render json: current_user, status: :ok
       end
 
       def create

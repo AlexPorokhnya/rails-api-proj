@@ -42,6 +42,9 @@ const Authentication = ({pageType = PageType.LOGIN}) => {
                 localStorage.setItem("authTocken", token);
 
                 console.log("Login successful", res.data);
+
+                navigate("/");
+
             })
             .catch(err => {
                 setErrors((prev) => ({
@@ -65,6 +68,8 @@ const Authentication = ({pageType = PageType.LOGIN}) => {
                 localStorage.setItem("authTocken", token);
 
                 console.log("Registration successful", res.data);
+
+                navigate("/");
             })
             .catch(err => {
                 setErrors((prev) => ({

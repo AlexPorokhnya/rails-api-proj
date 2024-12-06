@@ -10,8 +10,12 @@ function App() {
 
   return (
     <>
-      <Navbar />
-      <Content />
+    <div className='d-flex'>
+        <Navbar />
+        <div className='ms-4'>
+        <Content />
+      </div>
+    </div>
       <Footer />  
     </>
   )

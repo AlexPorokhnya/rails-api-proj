@@ -32,6 +32,8 @@
     <orderEntry type="library" scope="PROVIDED" name="date (v3.4.0, ruby-3.3.6-p108) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="devise (v4.9.4, ruby-3.3.6-p108) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="devise-jwt (v0.12.1, ruby-3.3.6-p108) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="dotenv (v3.1.4, ruby-3.3.6-p108) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="dotenv-rails (v3.1.4, ruby-3.3.6-p108) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="dry-auto_inject (v1.0.1, ruby-3.3.6-p108) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="dry-configurable (v1.2.0, ruby-3.3.6-p108) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="dry-core (v1.0.2, ruby-3.3.6-p108) [gem]" level="application" />

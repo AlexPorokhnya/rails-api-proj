@@ -6,29 +6,22 @@ import { auto } from "@popperjs/core";
 
 const Navbar = () => {
 
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null);
     const [render, setRender] = useState(false);
     const navigate = useNavigate();
 
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:3000/current_user", 
-            {
-                withCredentials: true
-            }).then(resp => {
-                console.log(resp.data);
-                setUser(resp.data);
-                console.log("User data: ", user)
-            }).catch(error =>{
-                console.log(error.data)
-            })
-    }, [])
+        axios.get("http://127.0.0.1:3000/current_user", {
+            withCredentials: true
+        }).then(resp => {
+            console.log("User: ", resp.data)
+            setUser(resp.data)
+        }).catch(error => {"Errors", error.message})
+    }, [render])
 
     const logOut = () => {
-        axios
-        .delete("http://127.0.0.1:3000/users/sign_out", {withCredentials: true})
-        .then(resp => {setUser(null)})
-        .catch(error => error.message)
+        setRender(!render)
     }
     
     return (

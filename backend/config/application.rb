@@ -23,6 +23,8 @@ module Backend
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
+    # Загружаем .env файлы
+    Dotenv::Railtie.load if defined?(Dotenv)
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -35,5 +37,11 @@ module Backend
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
+
+    config.session_store :disabled
+
   end
 end

@@ -1,5 +1,7 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect} from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Navbar from "../component/Navbar";
 
 
 const Posts = () => {
@@ -10,30 +12,21 @@ const Posts = () => {
     const [postId, setPostId] = useState(null);
     const [post, setPost] = useState({});
 
-    const token = localStorage.getItem("authTocken")
+
+    const navigate = useNavigate();
 
     useEffect(()=> {
-        const fetchUser = async () => {
 
-            if(!token){
-                console.error("Unauthorised");
-                return;
-            }
-
-            try{
-                const resp = await axios.get("http://localhost:3000/api/v1/current_user", {
-                    headers: {
-                        Authorization: token
-                    }
-                });
-
-                console.log(resp.data);
-                setUser(resp.data);
-            }catch(error){
-                console.log(error.data)
-            }
-        }
-        fetchUser();
+        axios.get("http://127.0.0.1:3000/current_user", 
+        {
+            withCredentials: true
+        }).then(resp => {
+            console.log(resp.data);
+            setUser(resp.data);
+            console.log("User data: ", user)
+        }).catch(error =>{
+            console.log(error.data)
+        })
 
         axios
             .get("http://127.0.0.1:3000/api/v1/posts")
@@ -62,56 +55,62 @@ const Posts = () => {
     }
 
     const handleSave =(id) => {
+        console.log(id)
         axios
         .patch(`http://127.0.0.1:3000/api/v1/posts/${id}`,
-            {
-                post
-            },
-            {
-            headers: {
-                Authorization: token
-            }
-        }).then(resp =>{
-            console.log("Succesfulli updated");
+            {post},
+            {withCredentials: true}
+            ).then(resp =>{
+            console.log(resp.data);
+            console.log("Successfully updated");
             setRender(!render);
         })
         .catch(error => {error.message});
         setPostId(null);
     }
     const handleDelete = (id) => {
-        
+        console.log(id)
         axios.
         delete(`http://127.0.0.1:3000/api/v1/posts/${id}`, {
-                headers: {
-                    Authorization: token
-                }
+                withCredentials: true
             }).then(resp => {
                 console.log("Successfully deleted")
                 setRender(!render);
             })
-            .catch(error => {error.message});
+            .catch(error => {console.log(error.message)});
     }
 
     if(!user){
-        return (
-            <div>Loading...</div>
+        //navigate("/login")
+        return(
+            <div>Lodaing...</div>
         )
     }
+
     return (
         <>
-            <div>Posts</div>
+            <Navbar />
+            {/* <div className=" mt-3 mb-2 d-flex justify-content-center" style={{fontSize: 36}}>Posts</div> */}
             {posts?.map(post => {
                 return(
                 <div className="mb-4" key={post.id}>
-                    <div>{post.id}</div>
                     <div>{post.email}</div>
                     {postId === post.id ? 
                     <>
+                    <div>
                         <input name="title" type="text" defaultValue={post.title} onChange={handleChange}></input>
+                    </div>
                     </>: 
                     <div>{post.title}</div>
                     }
+                    {postId === post.id ? 
+                    <>
+                    <div>
+                        <input name="body" type="text" defaultValue={post.body} onChange={handleChange}></input>
+                    </div>
+                    </>: 
                     <div>{post.body}</div>
+                    }
                     {
                         user.email === post.email && 
                         <>

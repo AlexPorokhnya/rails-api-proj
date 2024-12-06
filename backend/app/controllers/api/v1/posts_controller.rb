@@ -1,16 +1,16 @@
 module Api
   module V1
     class PostsController < ApplicationController
-      before_action :authenticate_user!, except: %i[index show]
+
+      include ActionController::Cookies
+
+      before_action :authenticate_user!, only: %i[create update destroy]
       before_action :set_post, only: %i[show update destroy]
       before_action :authorize_admin, only: %i[update destroy]
+
       def index
         @posts = Post.joins(:user).select('posts.*, users.email AS email')
         render json: @posts.map{ |post| post.attributes.merge(email: post.email) }
-      end
-
-      def current
-        render json: current_user, status: :ok
       end
 
       def create
@@ -60,6 +60,25 @@ module Api
 
       def set_post
         @post = Post.find(params[:id])
+      end
+      def authenticate_user!
+        token = cookies.encrypted[:auth_token]
+        puts "Token: #{token}"
+        Rails.logger.info "SECRET_KEY_BASE: #{Rails.application.secrets.secret_key_base}"
+
+        if token.blank?
+          render json: { error: 'Unauthorized' }, status: :unauthorized
+          return
+        end
+
+        begin
+          payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
+          Rails.logger.info "Decoded payload: #{payload}"
+          @current_user = User.find(payload['sub'])
+        rescue JWT::DecodeError, ActiveRecord::RecordNotFound => e
+          Rails.logger.error "Authentication error: #{e.message}"
+          render json: { error: 'Unauthorized' }, status: :unauthorized
+        end
       end
     end
   end
